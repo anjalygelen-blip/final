@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi primer sitio web</title>
+    <link rel="stylesheet" href="estilitos.css">
+</head>
+<body>
+<div class="container">
+<h1>Información personal</h1>
+<img src="imagenhojadevid.webp" alt="perfil">
+<h3>Nombre:</h3>
+<p>Gelen Margarita Mojica Alvarez</p>
+<h3>Ciudad:</h3>
+<p>Santa Marta</p>
+<h3>Dirección de residencia:</h3>
+<p>Cra 17 #30-33</p>
+<h3>Correo electrónico</h3>
+<p>Anjalygelen@gmail.com</p>
+<h3>Número de celular:</h3>
+<p>3053508454</p>
+<h3>Redes sociales:</h3>
+<a href="https://www.facebook.com/">Mi Facebook</a> <br>
+<h3>Hobbies</h3>
+<ol>
+    <li>Leer novelas de misterio</li>
+    <li>Caminar por la playa</li>
+    <li>Fotografía aficionada</li>
+    <li>Aprender nuevos idiomas</li>
+    <li>Cocinar recetas internacionales</li>
+</ol>
+
+<h3>Tareas priorizadas</h3>
+<ul>
+    <li><strong>Alta:</strong> Preparar la presentación para la clase</li>
+    <li><strong>Media:</strong> Responder correos importantes</li>
+    <li><strong>Media:</strong> Actualizar el portafolio en línea</li>
+    <li><strong>Baja:</strong> Organizar fotos antiguas</li>
+    <li><strong>Baja:</strong> Leer artículos pendientes</li>
+</ul>
+
+<h3>Horario semanal</h3>
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Hora / Día</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>08:00 - 10:00</th>
+            <td>Estudio</td>
+            <td>Clases</td>
+            <td>Estudio</td>
+            <td>Clases</td>
+            <td>Proyecto</td>
+        </tr>
+        <tr>
+            <th>10:30 - 12:30</th>
+            <td>Trabajo práctico</td>
+            <td>Investigación</td>
+            <td>Tutoría</td>
+            <td>Trabajo práctico</td>
+            <td>Revisión</td>
+        </tr>
+        <tr>
+            <th>14:00 - 16:00</th>
+            <td>Deporte</td>
+            <td>Proyecto</td>
+            <td>Clases</td>
+            <td>Lectura</td>
+            <td>Deporte</td>
+        </tr>
+        <tr>
+            <th>17:00 - 19:00</th>
+            <td>Tiempo libre</td>
+            <td>Estudio</td>
+            <td>Tiempo libre</td>
+            <td>Proyecto</td>
+            <td>Preparar entrega</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Formulario de contacto</h3>
+<form id="contactForm" novalidate>
+    <label for="name">Nombre:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="reason">Motivo de contacto:</label><br>
+    <input type="text" id="reason" name="reason" required><br><br>
+
+    <label for="email">Correo electrónico:</label><br>
+    <input type="email" id="email" name="email" required placeholder="tu@correo.com"><br><br>
+
+    <button type="submit">Enviar</button>
+</form>
+
+<div id="formMessage" aria-live="polite" style="margin-top:10px;"></div>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var name = document.getElementById('name').value.trim();
+    var reason = document.getElementById('reason').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var msg = document.getElementById('formMessage');
+    // limpiar errores visuales previos
+    ["name","reason","email"].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.classList.remove('input-error');
+    });
+    msg.classList.remove('success','error');
+    msg.textContent = '';
+
+    var firstInvalid = null;
+
+    if (!name) {
+        msg.textContent = 'Por favor ingresa tu nombre.';
+        document.getElementById('name').classList.add('input-error');
+        firstInvalid = firstInvalid || document.getElementById('name');
+    }
+    if (!reason) {
+        msg.textContent = msg.textContent || 'Por favor indica el motivo de contacto.';
+        document.getElementById('reason').classList.add('input-error');
+        firstInvalid = firstInvalid || document.getElementById('reason');
+    }
+    
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+        msg.textContent = msg.textContent || 'Por favor ingresa un correo electrónico válido.';
+        document.getElementById('email').classList.add('input-error');
+        firstInvalid = firstInvalid || document.getElementById('email');
+    } else {
+        if (email.indexOf('@') === -1) {
+            alert('Por favor agrega el símbolo @ en tu correo.');
+            msg.textContent = 'Por favor ingresa un correo electrónico válido.';
+            document.getElementById('email').classList.add('input-error');
+            firstInvalid = firstInvalid || document.getElementById('email');
+        } else if (!emailRegex.test(email)) {
+            msg.textContent = 'Por favor ingresa un correo electrónico válido.';
+            document.getElementById('email').classList.add('input-error');
+            firstInvalid = firstInvalid || document.getElementById('email');
+        }
+    }
+
+    if(firstInvalid){
+        firstInvalid.focus();
+        msg.classList.add('error');
+        return;
+    }
+
+    msg.classList.add('success');
+    msg.textContent = 'Mensaje enviado correctamente. Gracias, ' + name + '! (simulado)';
+    alert('Enviado correctamente.');
+    this.reset();
+});
+
+</script>
+
+</div>
+
+</body>
+
+</html>
